@@ -27,12 +27,12 @@
 #include "manipulator_bt/BTActionNode.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-using PlaceQos = mros2_msgs::action::PlaceQos;
+using PlaceQoS = mros2_msgs::action::PlaceQos;
 
 namespace manipulator_bt
 {
 
-class Place : public BtActionNode<NavigateToPoseQos>
+class Place : public BtActionNode<PlaceQoS>
 {
 public:
   explicit Place(
@@ -54,7 +54,7 @@ public:
   }
 private:
   rclcpp::Node::SharedPtr node_;
-  geometry_msgs::msg::Pose wp_;
+ // geometry_msgs::msg::Pose wp_;
 };
 
 }  // namespace manipulator_bt

@@ -25,7 +25,7 @@ Pick::Pick(
   const std::string & xml_tag_name,
   const std::string & action_name,
   const BT::NodeConfiguration & conf)
-: BtActionNode<NavigateToPoseQos>(xml_tag_name, action_name, conf)
+: BtActionNode<PickQoS>(xml_tag_name, action_name, conf)
 {
   node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
 }
@@ -42,7 +42,7 @@ void Pick::on_tick()
         // goal_.pose.pose.orientation = wp_.orientation;
 
   goal_.qos_expected.objective_type = "f_pick"; // should be mros_goal->qos_expected.objective_type = "f_pick";
-  diagnostic_msgs::msg::KeyValue _qos;
+  diagnostic_msgs::msg::KeyValue reliability_qos;
   reliability_qos.key = "reliability";
   reliability_qos.value = "0.7";
   goal_.qos_expected.qos.clear();
@@ -51,15 +51,16 @@ void Pick::on_tick()
 
 void Pick::on_wait_for_result()
 {  
-  std::string goal_id = rclcpp_action::to_string(goal_handle_->get_goal_id()); 
-  if (!goal_id.compare(feedback_->qos_status.objective_id) == 0){
+  // PICKING CHECK, NAV EXAMPLE
+      // std::string goal_id = rclcpp_action::to_string(goal_handle_->get_goal_id()); 
+      // if (!goal_id.compare(feedback_->qos_status.objective_id) == 0){
 
-    RCLCPP_INFO(node_->get_logger(), "goal id and feedback are different");
-    rclcpp::Rate(1).sleep(); //  Wait for the goal to finish
-    return;
-  }
-  RCLCPP_INFO(node_->get_logger(), "Curr mode: %s ", feedback_->qos_status.selected_mode.c_str()); 
-  
+      //   RCLCPP_INFO(node_->get_logger(), "goal id and feedback are different");
+      //   rclcpp::Rate(1).sleep(); //  Wait for the goal to finish
+      //   return;
+      // }
+      // RCLCPP_INFO(node_->get_logger(), "Curr mode: %s ", feedback_->qos_status.selected_mode.c_str()); 
+      
 
   // check selected_mode
 
@@ -114,10 +115,10 @@ BT_REGISTER_NODES(factory)
   BT::NodeBuilder builder =
     [](const std::string & name, const BT::NodeConfiguration & config)
     {
-      return std::make_unique<manipulator_bt::NavigateToWp>(
+      return std::make_unique<manipulator_bt::Pick>(
         name, "pick_qos", config);
     };
 
-  factory.registerBuilder<manipulator_bt::NavigateToWp>(
+  factory.registerBuilder<manipulator_bt::Pick>(
     "Pick", builder);
 }

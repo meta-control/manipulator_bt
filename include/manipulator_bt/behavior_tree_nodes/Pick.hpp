@@ -27,12 +27,12 @@
 #include "manipulator_bt/BTActionNode.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-using PickQoS = mros2_msgs::action::PickQoS;
+using PickQoS = mros2_msgs::action::PickQos;
 
 namespace manipulator_bt
 {
 
-class Pick : public BtActionNode<NavigateToPoseQos>
+class Pick : public BtActionNode<PickQoS>
 {
 public:
   explicit Pick(
@@ -54,7 +54,7 @@ public:
   }
 private:
   rclcpp::Node::SharedPtr node_;
-  geometry_msgs::msg::Pose wp_;
+  //geometry_msgs::msg::Pose wp_;
 };
 
 }  // namespace manipulator_bt
